@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Happy Birthday!</title>
+  
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #0a0c16;
+      --card-bg: rgba(21, 26, 48, 0.65);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-purple: #8b5cf6;
+      --accent-pink: #ec4899;
+      --accent-cyan: #06b6d4;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      padding-bottom: 60px;
+    }
+
+    /* Animated Particle Canvas Background */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Ambient Gradient Orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(90px);
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.45;
+      animation: orbFloat 12s infinite alternate ease-in-out;
+    }
+
+    .orb-1 {
+      width: 380px;
+      height: 380px;
+      background: var(--accent-purple);
+      top: -100px;
+      left: -100px;
+    }
+
+    .orb-2 {
+      width: 420px;
+      height: 420px;
+      background: var(--accent-pink);
+      bottom: -120px;
+      right: -100px;
+      animation-delay: -6s;
+    }
+
+    @keyframes orbFloat {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(40px, 50px) scale(1.15); }
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header / Hero Section */
+    header {
+      text-align: center;
+      padding: 60px 10px 40px 10px;
+    }
+
+    .pill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(139, 92, 246, 0.15);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      color: #c084fc;
+      padding: 6px 18px;
+      border-radius: 30px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      backdrop-filter: blur(8px);
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, #ffffff 20%, #c084fc 70%, #f472b6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      max-width: 480px;
+      margin: 0 auto 30px auto;
+    }
+
+    .btn-celebrate {
+      background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-pink) 100%);
+      color: #ffffff;
+      border: none;
+      padding: 14px 32px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(236, 72, 153, 0.35);
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-celebrate:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(236, 72, 153, 0.5);
+    }
+
+    .btn-celebrate:active {
+      transform: translateY(1px);
+    }
+
+    /* Story Section */
+    .timeline {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(139, 92, 246, 0.3);
+      transform: translateY(-3px);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .icon-wrapper {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+
+    .glass-card p {
+      color: #cbd5e1;
+      line-height: 1.7;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    /* Final Birthday Wishes Card */
+    .wishes-card {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%);
+      border: 1px solid rgba(236, 72, 153, 0.3);
+      text-align: center;
+    }
+
+    .wishes-card h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 2.2rem; }
+      .glass-card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Animated Background Canvas -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Glowing Radial Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="container">
+    
+    <!-- Hero Header -->
+    <header>
+      
+      <h1>Happy Birthday! </h1>
+      <p class="subtitle">A little digital timeline built to celebrate you and our journey together.</p>
+      <button class="btn-celebrate" onclick="fireConfetti()">Celebrate! 🎊</button>
+    </header>
+
+    <!-- Story Cards Timeline -->
+    <div class="timeline">
+      
+      <!-- Chapter 1 -->
+      <div class="glass-card">
+        <div class="card-header">
+          <div class="icon-wrapper">✨</div>
+          <div class="card-title">Chapter 1: How We Met</div>
+        </div>
+        <p id="chap1">
+          [Your Chapter 1 text will go here...]
+        </p>
+      </div>
+
+      <!-- Chapter 2 -->
+      <div class="glass-card">
+        <div class="card-header">
+          <div class="icon-wrapper">🚀</div>
+          <div class="card-title">Chapter 2: Memories & Milestones</div>
+        </div>
+        <p id="chap2">
+          [Your Chapter 2 text will go here...]
+        </p>
+      </div>
+
+      <!-- Chapter 3 -->
+      <div class="glass-card">
+        <div class="card-header">
+          <div class="icon-wrapper">🥂</div>
+          <div class="card-title">Chapter 3: Looking Ahead</div>
+        </div>
+        <p id="chap3">
+          [Your Chapter 3 text will go here...]
+        </p>
+      </div>
+
+      <!-- Closing Note -->
+      <div class="glass-card wishes-card">
+        <h2>Wishing You the Best Year Yet! ✨</h2>
+        <p>
+          May this upcoming year bring endless happiness, success, and amazing new adventures.
+        </p>
+      </div>
+
+    </div>
+
+    <footer>
+      Crafted with care for your special day 🎂
+    </footer>
+
+  </div>
+
+  <script>
+    // Canvas Background Particles Effect
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const particles = Array.from({ length: 40 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 2 + 0.5,
+      alpha: Math.random() * 0.5 + 0.2,
+      speedX: (Math.random() - 0.5) * 0.4,
+      speedY: (Math.random() - 0.5) * 0.4
+    }));
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.speedX;
+        p.y += p.speedY;
+
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(192, 132, 252, ${p.alpha})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // Full-Screen Confetti Cannon Function
+    function fireConfetti() {
+      if (typeof confetti === 'function') {
+        // Left side blast
+        confetti({
+          particleCount: 80,
+          angle: 60,
+          spread: 80,
+          origin: { x: 0, y: 0.7 }
+        });
+        // Right side blast
+        confetti({
+          particleCount: 80,
+          angle: 120,
+          spread: 80,
+          origin: { x: 1, y: 0.7 }
+        });
+      }
+    }
+
+    // Trigger BIG full-screen burst as soon as the page loads!
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(fireConfetti, 300);
+      setTimeout(fireConfetti, 800); // Second wave for extra celebration!
+    });
+  </script>
+</body>
+</html>
